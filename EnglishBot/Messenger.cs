@@ -17,15 +17,53 @@ namespace EnglishBot
 
         public async Task MakeAnswer(Conversation chat)
         {
-            var lastmessage = chat.GetLastMessage();
+            var lastmessage = chat.LastMessage;
+            ChatStatus chatStatus = chat.Status;
 
             if (parser.IsMessageCommand(lastmessage))
             {
-                await ExecCommand(chat, lastmessage);
+                if (chatStatus.isEmpty() || parser.IsStopCommand(lastmessage))
+                    await ExecCommand(chat, lastmessage);
+                else
+                    await SendText(chat, "Команду подать сейчас нельзя, осуществляется другая операция");
+            }
+            else if (chatStatus.isAdding())
+            {
+                var text = "";
+
+                if (chat.FillWord(lastmessage) == 0)
+                    text = chat.ChangeStatus();
+                else
+                    text = "Данные введены некорректно, повторите";
+
+                await SendText(chat, text);
+            }
+            else if (chatStatus.isDeleting())
+            {
+                var text = "";
+
+                if (chat.DeleteWord(lastmessage) == 0)
+                    text = chat.ChangeStatus();
+                else
+                    text = "Слово не найдено или введено некорректно, повторите";
+
+                await SendText(chat, text);
+            }
+            else if (chatStatus.isTraining())
+            {
+                var text = "";
+
+                if (chat.TrainingProcess(lastmessage) == 0)
+                    text = chat.ChangeStatus();
+                else
+                    text = "Данные введены некорректно, повторите";
+
+                await SendText(chat, text);
             }
             else
             {
-                await SendText(chat, "Команда не найдена, попробуйте что-то другое");
+                var text = "Такой команды нет, повторите";
+                await SendText(chat, text);
             }
         }
 
@@ -40,7 +78,8 @@ namespace EnglishBot
             if (parser.IsTextCommand(text))
             {
                 IChatTextCommand command = (IChatTextCommand)parser.GetCommand(text);
-                await SendText(chat, command.ReturnText());
+                chat.Status.status = command.ReturnStatus();
+                await SendText(chat, chat.ChangeStatus());
             }
         }
     }

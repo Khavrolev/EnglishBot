@@ -4,6 +4,6 @@ namespace EnglishBot
 {
     public interface IChatTextCommand
     {
-        string ReturnText();
+        BotData.eStatus ReturnStatus();
     }
 }

@@ -1,20 +1,50 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 
 namespace EnglishBot
 {
+    [DataContract]
     public class Word
     {
+        [DataMember]
         public string Russian { get; set; }
+        [DataMember]
         public string English { get; set; }
+        [DataMember]
         public string Subject { get; set; }
 
-        public Word(string russian)
+        public int AddRussian(string text)
         {
-            Russian = russian;
+            if (Regex.IsMatch(text, "^[А-Яа-я]+$") && !text.Contains(' '))
+            {
+                Russian = text;
+                return 0;
+            }
+            else
+                return -1;
+        }
+
+        public int AddEnglish(string text)
+        {
+            if (Regex.IsMatch(text, "[a-zA-Z]") && !text.Contains(' '))
+            {
+                English = text;
+                return 0;
+            }
+            else
+                return -1;
+        }
+
+        public int AddSubject(string text)
+        {
+            if (Regex.IsMatch(text, "^[А-Яа-я]+$") && !text.Contains(' '))
+            {
+                Subject = text;
+                return 0;
+            }
+            else
+                return -1;
         }
     }
 }

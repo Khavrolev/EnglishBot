@@ -33,8 +33,7 @@ namespace EnglishBot
         public async Task Response(MessageEventArgs e)
         {
             var chat = ReturnChat(e.Message.Chat);
-
-            chat.AddMessage(e.Message);
+            chat.LastMessage = e.Message.Text;
 
             await messenger.MakeAnswer(chat);
         }

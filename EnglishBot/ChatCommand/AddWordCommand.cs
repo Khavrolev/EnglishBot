@@ -9,9 +9,9 @@ namespace EnglishBot
             CommandText = "/addword";
         }
 
-        public string ReturnText()
+        public BotData.eStatus ReturnStatus()
         {
-            return "Введите русское значение слова";
+            return BotData.eStatus.Adding;
         }
     }
 }

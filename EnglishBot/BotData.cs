@@ -4,15 +4,22 @@ namespace EnglishBot
 {
     public static class BotData
     {
-        public static readonly string BotToken = "1761686701:AAGUKua2garvYYi0fCD9LFfNnH-Sz-nmdmg";
+        public static readonly string BotToken = "1522714521:AAEZnwVYe1dG8MEcUUv4VYoRuPu_r60YNZw";
 
         public enum eStatus
         {
             Empty,
+            Adding,
             AddingRussian,
             AddingEnglish,
             AddingSubject,
-            Added
+            Deleting,
+            DeletingEnglish,
+            Training,
+            TrainingType,
+            TrainingDirection,
+            TrainingOnGoing,
+            Stopping
         }
     }
 }
